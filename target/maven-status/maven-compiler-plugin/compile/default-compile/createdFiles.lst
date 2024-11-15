@@ -1,0 +1,4 @@
+app\App.class
+app\SearchEngine.class
+app\SearchEngine$ScoringAlgorithm.class
+app\Constant.class
