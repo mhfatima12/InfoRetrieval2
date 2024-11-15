@@ -71,7 +71,7 @@ public class QueryEngine {
         }
     }
 
-    public void buildIndex() throws IOException {
+    public void buildIndex() throws IOException, InterruptedException {
         IndexConstructor indexConstructor = new IndexConstructor();
         List<Document> docs;
 
@@ -90,7 +90,7 @@ public class QueryEngine {
 
     private void indexDocuments(List<Document> documents, IndexConstructor indexConstructor) throws IOException {
         if (documents != null && !documents.isEmpty()) {
-            indexConstructor.buildIndex(documents, analyzer, rankSimilarity);
+            indexConstructor.initializeIndex(documents, analyzer, rankSimilarity);
         }
     }
 
