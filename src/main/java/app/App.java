@@ -8,13 +8,8 @@ public class App {
         Scanner scanner = new Scanner(System.in);
         QueryEngine searchEngine = new QueryEngine(selectAlgorithm(scanner));
 
-        // Build index and Populate it using the datasets,
-        // process to extract relevant data and then store it using index writer.
         searchEngine.buildIndex();
-
-        // Extract and build queries and use Boolean and Term Query to search the index
-        // Write out the scores and document ids in results file
-        searchEngine.runQueries();
+        searchEngine.executeQueries();
 
         // Shut down Search Engine after queries are run
         searchEngine.shutdown();
@@ -23,8 +18,8 @@ public class App {
     }
 
 
-    public static QueryEngine.ScoringAlgorithm selectAlgorithm(Scanner scanner) {
-        QueryEngine.ScoringAlgorithm algorithm = null;
+    public static QueryEngine.ScoringMethod selectAlgorithm(Scanner scanner) {
+        QueryEngine.ScoringMethod algorithm = null;
         while (algorithm == null) {
             System.out.println(
                     "Select scoring method:\n"
@@ -36,19 +31,19 @@ public class App {
             String userResponse = scanner.nextLine();
             switch (userResponse) {
                 case "1":
-                    algorithm = QueryEngine.ScoringAlgorithm.Classic;
+                    algorithm = QueryEngine.ScoringMethod.Classic;
                     break;
                 case "2":
-                    algorithm = QueryEngine.ScoringAlgorithm.BM25;
+                    algorithm = QueryEngine.ScoringMethod.BM25;
                     break;
                 case "3":
-                    algorithm = QueryEngine.ScoringAlgorithm.Boolean;
+                    algorithm = QueryEngine.ScoringMethod.Boolean;
                     break;
                 case "4":
-                    algorithm = QueryEngine.ScoringAlgorithm.LMDirichlet;
+                    algorithm = QueryEngine.ScoringMethod.LMDirichlet;
                     break;
                 case "5":
-                    algorithm = QueryEngine.ScoringAlgorithm.DFISimilarity;
+                    algorithm = QueryEngine.ScoringMethod.DFISimilarity;
                     break;
                 default:
                     break;

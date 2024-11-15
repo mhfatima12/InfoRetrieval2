@@ -1,20 +1,19 @@
 package app;
 
-import app.parser.Fr94Parser;
-import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.analysis.standard.StandardAnalyzer;
-import org.apache.lucene.document.Document;
-import org.apache.lucene.index.IndexWriter;
-import org.apache.lucene.index.IndexWriterConfig;
-import org.apache.lucene.store.Directory;
-import org.apache.lucene.store.FSDirectory;
-import org.apache.lucene.search.similarities.Similarity;
-
 import java.io.IOException;
 import java.nio.file.Paths;
 import java.util.List;
 
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.document.Document;
+import org.apache.lucene.index.IndexWriter;
+import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.search.similarities.Similarity;
+import org.apache.lucene.store.Directory;
+import org.apache.lucene.store.FSDirectory;
+
 import static app.Constant.INDEX_DIRECTORY;
+import app.parser.Fr94Parser;
 
 public class IndexConstructor {
 
@@ -53,16 +52,11 @@ public class IndexConstructor {
         // Implement logic to remove stopwords if necessary
     }
 
-    public static void main(String[] args)  {
-        try {
-            Fr94Parser parser = new Fr94Parser();
-            List<Document> documents = parser.parseFR94("./docs/fr94/");
-
-            cleanDocuments(documents); // Pre-process documents before indexing
-
-            //initializeIndex(documents, new StandardAnalyzer(), new BM25Similarity());
-        } catch (InterruptedException e) {
-            System.err.println("Error during indexing process: " + e.getMessage());
-        }
+    public static void main(String[] args) throws IOException, InterruptedException  {
+        Fr94Parser parser = new Fr94Parser();
+        List<Document> documents = parser.parseFR94("./docs/fr94/");
+        cleanDocuments(documents); 
+        
+        //initializeIndex(documents, new StandardAnalyzer(), new BM25Similarity());
     }
 }

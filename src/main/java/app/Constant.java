@@ -1,10 +1,5 @@
 package app;
 
-/**
- * @author Siuyun Yip
- * @version 1.0
- * @date 2022/11/18 11:57
- */
 public interface Constant {
     String INDEX_DIRECTORY = "index";
 

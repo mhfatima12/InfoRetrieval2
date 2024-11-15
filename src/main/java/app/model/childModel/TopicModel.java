@@ -10,7 +10,7 @@ public class TopicModel extends QueryObject {
 
     private String title;
 
-    private String getDescription;
+    private String Description;
 
     private String narrative;
 
@@ -18,6 +18,6 @@ public class TopicModel extends QueryObject {
 
     @Override
     public String toString() {
-        return getDescription + " " + narrative;
+        return Description + " " + narrative;
     }
 }
