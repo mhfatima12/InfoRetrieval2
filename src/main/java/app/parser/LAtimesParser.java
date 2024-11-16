@@ -1,8 +1,7 @@
 package app.parser;
+
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.apache.lucene.document.Document;
 import org.apache.lucene.document.Field;
@@ -12,10 +11,18 @@ import org.apache.lucene.document.TextField;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
+import org.apache.lucene.index.IndexWriter;
 
 public class LAtimesParser {
-    public List<Document> parseLAtimes(String path) throws IOException {
-        System.out.println("Parsing LA Times documents");
+
+    /**
+     * Parses LA Times documents and directly indexes them to reduce memory usage.
+     * @param path The directory containing the LA Times XML files.
+     * @param writer The IndexWriter used to index the documents.
+     * @throws IOException if there is an error while reading files.
+     */
+    public void parseLAtimesAndIndex(String path, IndexWriter writer) throws IOException {
+        System.out.println("Parsing and indexing LA Times documents from path: " + path);
 
         // Get all files in the directory
         File[] files = new File(path).listFiles();
@@ -23,7 +30,9 @@ public class LAtimesParser {
             throw new IOException("Invalid directory path or no files found in: " + path);
         }
 
-        List<LatimesModel> modelList = new ArrayList<>();
+        // FieldType for storing content and headline with term vectors
+        FieldType fieldType = new FieldType(TextField.TYPE_STORED);
+        fieldType.setStoreTermVectors(true);
 
         // Iterate over each file and parse
         for (File file : files) {
@@ -31,83 +40,28 @@ public class LAtimesParser {
                 org.jsoup.nodes.Document document = Jsoup.parse(file, "UTF-8", "");
                 Elements elements = document.select("DOC");
 
+                // Process each element and index immediately
                 for (Element element : elements) {
-                    LatimesModel latimesModel = new LatimesModel();
-                    latimesModel.setDocNo(element.select("DOCNO").text());
-                    latimesModel.setContent(element.select("TEXT").text());
-                    latimesModel.setHeadline(element.select("HEADLINE").text());
-                    modelList.add(latimesModel);
+                    String docNo = element.select("DOCNO").text().trim();
+                    String content = element.select("TEXT").text().trim();
+                    String headline = element.select("HEADLINE").text().trim();
+
+                    if (!docNo.isEmpty() && !content.isEmpty()) {
+                        // Immediately index the parsed document (avoid storing in memory)
+                        Document luceneDoc = new Document();
+                        luceneDoc.add(new StringField("docNumber", docNo, Field.Store.YES));
+                        luceneDoc.add(new Field("docContent", content, fieldType));
+                        luceneDoc.add(new Field("docTitle", headline, fieldType));
+
+                        // Index the document immediately
+                        writer.addDocument(luceneDoc);
+                    }
                 }
             }
         }
 
-        return addDocument(modelList);
+        System.out.println("Completed parsing and indexing. Documents indexed.");
     }
 
-    /**
-     * Converts parsed models to Lucene Documents.
-     * @param latimesModels List of LatimesModel objects.
-     * @return List of Lucene Documents.
-     */
-    private List<Document> addDocument(List<LatimesModel> latimesModels) {
-        List<Document> docList = new ArrayList<>();
-
-        for (LatimesModel latimesModel : latimesModels) {
-            Document document = new Document();
-
-            // Add DOCNO as StringField (indexed but not tokenized)
-            document.add(new StringField("docNumber", latimesModel.getDocNo(), Field.Store.YES));
-
-            // Custom FieldType with term vectors for content and headline
-            FieldType fieldType = new FieldType(TextField.TYPE_STORED);
-            fieldType.setStoreTermVectors(true);
-
-            // Add content and headline with custom FieldType
-            document.add(new Field("docContent", latimesModel.getContent(), fieldType));
-            document.add(new Field("docTitle", latimesModel.getHeadline(), fieldType));
-
-            docList.add(document);
-        }
-
-        return docList;
-    }
-
-    public static void main(String[] args) {
-        try {
-            LAtimesParser parser = new LAtimesParser();
-            List<Document> documents = parser.parseLAtimes("./docs/latimes");
-            System.out.println("Total documents parsed: " + documents.size());
-        } catch (IOException e) {
-            System.err.println("Error during parsing: " + e.getMessage());
-        }
-    }
-}
-class LatimesModel {
-    private String docNo;
-    private String content;
-    private String headline;
-
-    public String getDocNo() {
-        return docNo;
-    }
-
-    public void setDocNo(String docNo) {
-        this.docNo = docNo;
-    }
-
-    public String getContent() {
-        return content;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public String getHeadline() {
-        return headline;
-    }
-
-    public void setHeadline(String headline) {
-        this.headline = headline;
-    }
+   
 }
