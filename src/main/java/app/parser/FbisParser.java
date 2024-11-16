@@ -47,11 +47,7 @@ public class FbisParser {
         System.out.println("Indexing process completed.");
     }
 
-    /**
-     * Parses an FbisModel from the document element.
-     * @param element The document element containing the information.
-     * @return The parsed FbisModel.
-     */
+    
     private FbisModel parseFbisModel(Element element) {
         FbisModel fbisModel = new FbisModel();
         fbisModel.setDocNo(element.select("DOCNO").text());
@@ -60,11 +56,7 @@ public class FbisParser {
         return fbisModel;
     }
 
-    /**
-     * Extracts the title from the relevant header tags (H3-H8).
-     * @param element The document element containing the headers.
-     * @return The extracted title.
-     */
+   
     private String extractTitle(Element element) {
         StringBuilder titleBuilder = new StringBuilder();
         for (int i = 3; i <= 8; i++) {
@@ -77,16 +69,12 @@ public class FbisParser {
         return titleBuilder.toString().trim();
     }
 
-    /**
-     * Creates a Lucene document from the FbisModel.
-     * @param fbisModel The FbisModel containing the document data.
-     * @return The corresponding Lucene Document.
-     */
+    
     private Document createLuceneDocument(FbisModel fbisModel) {
         Document document = new Document();
         document.add(new StringField("docNumber", fbisModel.getDocNo(), Field.Store.YES));
 
-        // Use a FieldType with term vectors for storing text and its analysis
+        
         FieldType fieldType = new FieldType(TextField.TYPE_STORED);
         fieldType.setStoreTermVectors(true);
 
@@ -96,11 +84,7 @@ public class FbisParser {
         return document;
     }
 
-    /**
-     * Removes unnecessary or nonsense characters from the text.
-     * @param data The text data to be cleaned.
-     * @return The cleaned text.
-     */
+
     private String removeNonsense(String data) {
         if (data.contains("\n")) {
             data = data.replaceAll("\n", " ").trim();
@@ -112,7 +96,7 @@ public class FbisParser {
             data = data.replaceAll("]", "").trim();
         }
 
-        // Remove all the tags from the list
+       
         for (String tag : tagList) {
             data = data.replaceAll("<" + tag + ">", "");
             data = data.replaceAll("<" + tag + "/>", "");
