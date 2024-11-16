@@ -18,33 +18,27 @@ public class FbisParser {
             "F", "F P=100", "F P=101", "F P=102", "F P=103", "F P=104", "F P=105", "F P=106", "F P=107",
             "TI", "H1", "H2", "H3", "H4", "H5", "H6", "H7", "H8", "TR", "TXT5", "HEADER", "TEXT", "AU");
 
-    /**
-     * Parses FBI documents and directly indexes them without storing them in memory.
-     * @param path The directory containing the FBI XML files.
-     * @param writer The IndexWriter to index documents.
-     * @throws IOException if an I/O error occurs.
-     */
     public void parseAndIndexFbis(String path, IndexWriter writer) throws IOException {
         System.out.println("Parsing and indexing FBI documents from path: " + path);
 
-        // Get all files in the directory
+        
         File[] files = new File(path).listFiles();
         if (files == null) {
             throw new IOException("Invalid directory path or no files found in: " + path);
         }
 
-        // Process each file and parse documents directly
+        
         for (File file : files) {
             if (file.isFile()) {
                 org.jsoup.nodes.Document document = Jsoup.parse(file, "UTF-8", "");
                 Elements elements = document.select("DOC");
 
-                // Process each element in the document
+                
                 for (Element element : elements) {
                     FbisModel fbisModel = parseFbisModel(element);
                     Document luceneDoc = createLuceneDocument(fbisModel);
 
-                    // Index the Lucene document directly after parsing
+                
                     writer.addDocument(luceneDoc);
                 }
             }
