@@ -2,11 +2,9 @@ package app;
 
 import java.io.IOException;
 import java.nio.file.Paths;
-import java.util.List;
 import java.util.Scanner;
 
 import org.apache.lucene.analysis.Analyzer;
-import org.apache.lucene.document.Document;
 import org.apache.lucene.search.similarities.BM25Similarity;
 import org.apache.lucene.search.similarities.BooleanSimilarity;
 import org.apache.lucene.search.similarities.ClassicSimilarity;
@@ -35,6 +33,8 @@ public class QueryEngine {
     private final ExpandedQueryProcessor expandedProcessor;
     private Similarity rankSimilarity;
     private Directory directory;
+    private IndexWriterConfig indexWriterConfig;
+    private IndexWriter indexWriter;
 
     public enum ScoringMethod { BM25, Classic, Boolean, LMDirichlet, DFISimilarity }
 
@@ -72,58 +72,85 @@ public class QueryEngine {
             throw new RuntimeException("Failed to initialize directory", e);
         }
     }
+    private void initializeIndexWriterConfig() {
+            indexWriterConfig = new IndexWriterConfig(new CustomAnalyser());
+            indexWriterConfig.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
+            indexWriterConfig.setSimilarity(rankSimilarity);
+    }
+    
+    private void initializeIndexWriter() {
+            try {
+            indexWriter = new IndexWriter(directory, indexWriterConfig);
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to initialize Indexwriter", e);
+        }
+    }
+    
+    private void closeDirectoryAndIndexWriter() {
+        try{
+            indexWriter.close();
+            directory.close();
+        }
+        catch (IOException e) {
+            throw new RuntimeException("Failed to close directory & indexwriter", e);
+        }
+    }
+    
+    private void parseAndIndexfiles(String filesToBeParsed) {
+        
+        initializeDirectory();
+        initializeIndexWriterConfig();
+        initializeIndexWriter();
+              
+        switch (filesToBeParsed) {
+            case "FT":
+                try{
+                new FTParser().parseAndIndexFTDocs(FT_DIR, indexWriter);
+                break;
+                }
+                catch (IOException e) {
+                    throw new RuntimeException("Failed to parse FT directory", e);
+                }
+            case "FBI":
+                try{
+                new FbisParser().parseAndIndexFbis(FBI_DIR, indexWriter);
+                break;
+                }
+                catch (IOException e) {
+                    throw new RuntimeException("Failed to FBI directory", e);
+                }
+            case "FR94":
+                try{
+                new Fr94Parser().parseAndIndexFR94(FR94_DIR, indexWriter);
+                break;
+                }
+                catch (IOException e) {
+                    throw new RuntimeException("Failed to FR94 directory", e);
+                }
+            case "LATIMES":
+                try{
+                new LAtimesParser().parseLAtimesAndIndex(LATIMES_DIR, indexWriter);
+                break;
+                }
+                catch (IOException e) {
+                    throw new RuntimeException("Failed to LATIMES directory", e);
+                }
+            default:
+                break;
+        }
+        closeDirectoryAndIndexWriter();
+    }
+    
+    
 
     public void buildIndex() throws IOException, InterruptedException {
-//        IndexConstructor indexConstructor = new IndexConstructor();
-        //List<Document> docs;
-        Directory dir = FSDirectory.open(Paths.get(INDEX_DIRECTORY));
-        IndexWriterConfig indexWriterConfig = new IndexWriterConfig(new CustomAnalyser());
-        indexWriterConfig.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
-        indexWriterConfig.setSimilarity(new BM25Similarity());
-        
-        
-        IndexWriter indexWriter = new IndexWriter(dir, indexWriterConfig);
-        new FTParser().parseAndIndexFTDocs(FT_DIR, indexWriter);
-        indexWriter.close();
-        dir.close();
-        //indexDocuments(docs, indexConstructor);
-        
-        indexWriterConfig = new IndexWriterConfig(new CustomAnalyser());
-        indexWriterConfig.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
-        indexWriterConfig.setSimilarity(new BM25Similarity());
-        dir = FSDirectory.open(Paths.get(INDEX_DIRECTORY));
-        indexWriter = new IndexWriter(dir, indexWriterConfig);
-        new FbisParser().parseAndIndexFbis(FBI_DIR, indexWriter);
-        indexWriter.close();
-        dir.close();
-        //indexDocuments(docs, indexConstructor);
-        
-        indexWriterConfig = new IndexWriterConfig(new CustomAnalyser());
-        indexWriterConfig.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
-        indexWriterConfig.setSimilarity(new BM25Similarity());
-        dir = FSDirectory.open(Paths.get(INDEX_DIRECTORY));
-        indexWriter = new IndexWriter(dir, indexWriterConfig);
-        new Fr94Parser().parseAndIndexFR94(FR94_DIR, indexWriter);
-        indexWriter.close();
-        dir.close();
-        //indexDocuments(docs, indexConstructor);
-        
-        indexWriterConfig = new IndexWriterConfig(new CustomAnalyser());
-        indexWriterConfig.setOpenMode(IndexWriterConfig.OpenMode.CREATE_OR_APPEND);
-        indexWriterConfig.setSimilarity(new BM25Similarity());
-        dir = FSDirectory.open(Paths.get(INDEX_DIRECTORY));
-        indexWriter = new IndexWriter(dir, indexWriterConfig);
-        new LAtimesParser().parseLAtimesAndIndex(LATIMES_DIR, indexWriter);
-        indexWriter.close();
-        dir.close();
-        //indexDocuments(docs, indexConstructor);
+            
+          parseAndIndexfiles("FT");
+          parseAndIndexfiles("FBI");
+          parseAndIndexfiles("FR94");
+          parseAndIndexfiles("LATIMES");
     }
 
-//    private void indexDocuments(List<Document> documents, IndexConstructor indexConstructor) throws IOException {
-//        if (documents != null && !documents.isEmpty()) {
-//            indexConstructor.initializeIndex(documents, analyzer, rankSimilarity);
-//        }
-//    }
 
     public void executeQueries() {
         System.out.println("Executing Queries\n1) Standard Query\n2) Expanded Query");
