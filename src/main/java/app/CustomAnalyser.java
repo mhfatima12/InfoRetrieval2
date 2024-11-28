@@ -51,8 +51,8 @@ public class CustomAnalyser extends Analyzer {
     private static CharArraySet loadStopWords() {
         try {
             String stopWordsContent = Files.readString(Paths.get(Constant.STOPWORD_FILE)).toLowerCase();
-            List<String> stopWords = Arrays.stream(stopWordsContent.split("\\R")) // Split by line endings
-                                           .filter(word -> !word.isBlank()) // Remove empty lines
+            List<String> stopWords = Arrays.stream(stopWordsContent.split("\\R")) 
+                                           .filter(word -> !word.isBlank()) 
                                            .collect(Collectors.toList());
             return new CharArraySet(stopWords, true);
         } catch (IOException ex) {
