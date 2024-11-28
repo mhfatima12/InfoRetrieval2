@@ -4,11 +4,11 @@ Info Retrieval Assignment 2
 
 ### To run the application:
 
-`java -jar target/SearchEngine-1.0.jar`
+`mvn exec:java -Dexec.mainClass="app.App"`
 
 ### For running on virtual machine (vm):
 
-`java -Xmx4G -cp "target/SearchEngine-1.0.jar" app.App`
+`mvn exec:java -Dexec.mainClass="app.App"`
 
 ### For evaluation using trec_eval:
 
