@@ -1,18 +1,18 @@
-C:\Users\Maham Fatima\Desktop\Masters CS\InfoRetrieval\GroupAssignment2\src\main\java\app\App.java
-C:\Users\Maham Fatima\Desktop\Masters CS\InfoRetrieval\GroupAssignment2\src\main\java\app\Constant.java
-C:\Users\Maham Fatima\Desktop\Masters CS\InfoRetrieval\GroupAssignment2\src\main\java\app\IndexBulider.java
-C:\Users\Maham Fatima\Desktop\Masters CS\InfoRetrieval\GroupAssignment2\src\main\java\app\model\BaseModel.java
-C:\Users\Maham Fatima\Desktop\Masters CS\InfoRetrieval\GroupAssignment2\src\main\java\app\model\childModel\FbisModel.java
-C:\Users\Maham Fatima\Desktop\Masters CS\InfoRetrieval\GroupAssignment2\src\main\java\app\model\childModel\FTModel.java
-C:\Users\Maham Fatima\Desktop\Masters CS\InfoRetrieval\GroupAssignment2\src\main\java\app\model\childModel\LatimesModel.java
-C:\Users\Maham Fatima\Desktop\Masters CS\InfoRetrieval\GroupAssignment2\src\main\java\app\model\childModel\TopicModel.java
-C:\Users\Maham Fatima\Desktop\Masters CS\InfoRetrieval\GroupAssignment2\src\main\java\app\model\QueryObject.java
-C:\Users\Maham Fatima\Desktop\Masters CS\InfoRetrieval\GroupAssignment2\src\main\java\app\CustomAnalyser.java
-C:\Users\Maham Fatima\Desktop\Masters CS\InfoRetrieval\GroupAssignment2\src\main\java\app\parser\FbisParser.java
-C:\Users\Maham Fatima\Desktop\Masters CS\InfoRetrieval\GroupAssignment2\src\main\java\app\parser\Fr94Parser.java
-C:\Users\Maham Fatima\Desktop\Masters CS\InfoRetrieval\GroupAssignment2\src\main\java\app\parser\FTParser.java
-C:\Users\Maham Fatima\Desktop\Masters CS\InfoRetrieval\GroupAssignment2\src\main\java\app\parser\LAtimesParser.java
-C:\Users\Maham Fatima\Desktop\Masters CS\InfoRetrieval\GroupAssignment2\src\main\java\app\QueryBuilder.java
-C:\Users\Maham Fatima\Desktop\Masters CS\InfoRetrieval\GroupAssignment2\src\main\java\app\QueryResolver.java
-C:\Users\Maham Fatima\Desktop\Masters CS\InfoRetrieval\GroupAssignment2\src\main\java\app\QueryResolverWithExp.java
-C:\Users\Maham Fatima\Desktop\Masters CS\InfoRetrieval\GroupAssignment2\src\main\java\app\SearchEngine.java
+/Users/hritikamehta/Downloads/HMLuceneParser/IsProject2/InfoRetrieval2/src/main/java/app/App.java
+/Users/hritikamehta/Downloads/HMLuceneParser/IsProject2/InfoRetrieval2/src/main/java/app/BasicQueryProcessor.java
+/Users/hritikamehta/Downloads/HMLuceneParser/IsProject2/InfoRetrieval2/src/main/java/app/Constant.java
+/Users/hritikamehta/Downloads/HMLuceneParser/IsProject2/InfoRetrieval2/src/main/java/app/CustomAnalyser.java
+/Users/hritikamehta/Downloads/HMLuceneParser/IsProject2/InfoRetrieval2/src/main/java/app/ExpandedQueryProcessor.java
+/Users/hritikamehta/Downloads/HMLuceneParser/IsProject2/InfoRetrieval2/src/main/java/app/IndexConstructor.java
+/Users/hritikamehta/Downloads/HMLuceneParser/IsProject2/InfoRetrieval2/src/main/java/app/QueryBuilder.java
+/Users/hritikamehta/Downloads/HMLuceneParser/IsProject2/InfoRetrieval2/src/main/java/app/QueryEngine.java
+/Users/hritikamehta/Downloads/HMLuceneParser/IsProject2/InfoRetrieval2/src/main/java/app/model/BaseModel.java
+/Users/hritikamehta/Downloads/HMLuceneParser/IsProject2/InfoRetrieval2/src/main/java/app/model/QueryObject.java
+/Users/hritikamehta/Downloads/HMLuceneParser/IsProject2/InfoRetrieval2/src/main/java/app/model/childModel/FTModel.java
+/Users/hritikamehta/Downloads/HMLuceneParser/IsProject2/InfoRetrieval2/src/main/java/app/model/childModel/FbisModel.java
+/Users/hritikamehta/Downloads/HMLuceneParser/IsProject2/InfoRetrieval2/src/main/java/app/model/childModel/LatimesModel.java
+/Users/hritikamehta/Downloads/HMLuceneParser/IsProject2/InfoRetrieval2/src/main/java/app/model/childModel/TopicModel.java
+/Users/hritikamehta/Downloads/HMLuceneParser/IsProject2/InfoRetrieval2/src/main/java/app/parser/FTParser.java
+/Users/hritikamehta/Downloads/HMLuceneParser/IsProject2/InfoRetrieval2/src/main/java/app/parser/FbisParser.java
+/Users/hritikamehta/Downloads/HMLuceneParser/IsProject2/InfoRetrieval2/src/main/java/app/parser/Fr94Parser.java
+/Users/hritikamehta/Downloads/HMLuceneParser/IsProject2/InfoRetrieval2/src/main/java/app/parser/LAtimesParser.java

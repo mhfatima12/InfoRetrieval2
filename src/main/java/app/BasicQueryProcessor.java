@@ -22,11 +22,38 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import org.apache.lucene.search.similarities.BooleanSimilarity;
+import org.apache.lucene.search.similarities.ClassicSimilarity;
+import org.apache.lucene.search.similarities.DFISimilarity;
+import org.apache.lucene.search.similarities.LMDirichletSimilarity;
 
 public class BasicQueryProcessor {
+    
+    public String getSimilarity(Similarity similarity)
+    {
+        String stringSimilarity = "";
+        if (similarity instanceof BM25Similarity) {
+            return stringSimilarity = "BM25";
+        } 
+        else if (similarity instanceof ClassicSimilarity) {
+            return stringSimilarity = "Classic";
+        }
+        else if (similarity instanceof BooleanSimilarity) {
+            return stringSimilarity = "Boolean";
+        }
+        else if (similarity instanceof DFISimilarity) {
+            return stringSimilarity = "DFI";
+        }
+        else if (similarity instanceof LMDirichletSimilarity) {
+            return stringSimilarity = "LMDirichlet";
+        }
+        return stringSimilarity;
+        
+    }
 
     public void runQuery(Analyzer analyzer, Similarity similarity) throws Exception {
         System.out.println("Running Queries Now...");
+        String stringSimilarity = getSimilarity(similarity);
         Directory indexDirectory = FSDirectory.open(Paths.get(Constant.INDEX_DIRECTORY));
         IndexReader indexReader = DirectoryReader.open(indexDirectory);
         IndexSearcher indexSearcher = new IndexSearcher(indexReader);
@@ -50,7 +77,7 @@ public class BasicQueryProcessor {
                         topic.getTopicNum() + " Q0 " 
                         + indexSearcher.doc(documentHit.doc).get("docNumber") + " " 
                         + rank + " " 
-                        + documentHit.score + " EnglishAnalyzerBM25"
+                        + documentHit.score + " CustomAnalyser"+ stringSimilarity
                 );
             }
         }
