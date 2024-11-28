@@ -24,6 +24,8 @@ import app.parser.Fr94Parser;
 import app.parser.LAtimesParser;
 import org.apache.lucene.index.IndexWriter;
 import org.apache.lucene.index.IndexWriterConfig;
+import org.apache.lucene.search.similarities.DFISimilarity;
+import org.apache.lucene.search.similarities.IndependenceStandardized;
 
 public class QueryEngine {
 
@@ -54,7 +56,7 @@ public class QueryEngine {
                 this.rankSimilarity = new BooleanSimilarity();
                 break;
             case DFISimilarity:
-                // this.rankSimilarity = new DFISimilarity();
+                this.rankSimilarity = new DFISimilarity(new IndependenceStandardized());
                 break;
             case LMDirichlet:
                 this.rankSimilarity = new LMDirichletSimilarity();
