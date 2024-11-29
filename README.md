@@ -15,7 +15,7 @@ Group Project for CS7IS3 Assignment 2
 ### If duplicates in Results file, then:
 `rm -r index/`
 
-## Results - 
+## Results - These results are obtained by using the BM25 Similarity along with the expanded query option.
 
 
 | runid                | CustomAnalyzerBM25  |
